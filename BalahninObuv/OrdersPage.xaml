@@ -1,0 +1,122 @@
+﻿<Page x:Class="BalahninObuv.OrdersPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:local="clr-namespace:BalahninObuv"
+      mc:Ignorable="d"
+      Title="Заказы"
+      FontFamily="Calibri"
+      Background="White"
+      d:DesignHeight="700" d:DesignWidth="1280">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" Text="Список заказов"
+                   FontSize="26" FontWeight="Bold"
+                   Foreground="#333333"
+                   HorizontalAlignment="Center"
+                   Margin="0,15,0,10"/>
+
+        <Border Grid.Row="1" Background="#D2F6E7" Padding="10">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <TextBlock Text="Поиск: " FontSize="16" VerticalAlignment="Center"/>
+                <TextBox Name="TBox_OrderSearch" Width="250" Height="28"
+                         FontSize="14" Margin="0,0,15,0"
+                         VerticalContentAlignment="Center"
+                         TextChanged="TBox_OrderSearch_TextChanged"/>
+
+                <Button Name="BtnAddOrder" Content="Добавить заказ"
+                        Width="160" Height="30" FontSize="14"
+                        Background="#70B2AF" Foreground="White"
+                        BorderThickness="0" Cursor="Hand"
+                        Visibility="Collapsed"
+                        Click="BtnAddOrder_Click"/>
+            </StackPanel>
+        </Border>
+
+        <ListView Grid.Row="2" Name="ListViewOrders"
+                  BorderThickness="0" Margin="10"
+                  d:ItemsSource="{d:SampleData ItemCount=5}">
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                </Style>
+            </ListView.ItemContainerStyle>
+
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Border BorderBrush="#CCCCCC" BorderThickness="1"
+                            Padding="10" Margin="0,0,0,5">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="80"/>
+                                <ColumnDefinition Width="120"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <!-- № заказа -->
+                            <TextBlock Grid.Column="0" FontSize="16"
+                                       VerticalAlignment="Center">
+                                <Run Text="№ "/>
+                                <Run Text="{Binding OrderNumber, Mode=OneWay}"/>
+                            </TextBlock>
+
+                            <!-- Дата -->
+                            <TextBlock Grid.Column="1" FontSize="16"
+                                       VerticalAlignment="Center"
+                                       Text="{Binding OrderDate, StringFormat={}{0:dd.MM.yyyy}}"/>
+
+                            <!-- Клиент + позиций -->
+                            <StackPanel Grid.Column="2"
+                                        VerticalAlignment="Center"
+                                        Margin="10,0,10,0">
+                                <TextBlock FontSize="16" FontWeight="Bold"
+                                           Text="{Binding ClientName}"
+                                           TextTrimming="CharacterEllipsis"/>
+                                <TextBlock FontSize="14" Foreground="Gray">
+                                    <Run Text="Позиций: "/>
+                                    <Run Text="{Binding ItemsCount, Mode=OneWay}"/>
+                                </TextBlock>
+                            </StackPanel>
+
+                            <!-- Сумма + кнопки -->
+                            <StackPanel Grid.Column="3"
+                                        Orientation="Horizontal"
+                                        HorizontalAlignment="Right"
+                                        VerticalAlignment="Center">
+
+                                <TextBlock FontSize="16" FontWeight="Bold"
+                                           VerticalAlignment="Center"
+                                           Margin="0,0,15,0"
+                                           TextAlignment="Right">
+                                    <Run Text="{Binding TotalSum, StringFormat={}{0:N2} руб., Mode=OneWay}"/>
+                                </TextBlock>
+
+                                <Button Content="Состав" Width="100" Height="30"
+                                        FontSize="14" Margin="0,0,5,0"
+                                        Background="#70B2AF" Foreground="White"
+                                        BorderThickness="0" Cursor="Hand"
+                                        Click="BtnOpenOrder_Click"/>
+
+                                <Button Content="Удалить" Width="90" Height="30"
+                                        FontSize="14"
+                                        Background="#70B2AF" Foreground="White"
+                                        BorderThickness="0" Cursor="Hand"
+                                        Visibility="{Binding DeleteVisibility}"
+                                        Click="BtnDeleteOrder_Click"
+                                        />
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </Grid>
+</Page>
